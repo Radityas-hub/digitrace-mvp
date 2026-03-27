@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SIDASI Bali - Sistem Digital Identifikasi Sampah Bali</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: { ocean: '#006994', eco: '#22963E', ecoLight: '#E8F5E9', warning: '#F59E0B', bg: '#F5F7F5' },
+                    fontFamily: { sans: ['Poppins', 'sans-serif'] }
+                }
+            }
+        }
+    </script>
+    <style>
+        body { font-family: 'Poppins', sans-serif; background: #F5F7F5; }
+        ::-webkit-scrollbar { display: none; }
+    </style>
+</head>
+<body class="antialiased text-gray-800 min-h-screen flex flex-col max-w-md mx-auto relative pb-24 bg-bg">
+
+    <!-- Header -->
+    <header class="px-5 pt-6 pb-3 flex items-center gap-3">
+        <div class="w-10 h-10 bg-ecoLight rounded-2xl flex items-center justify-center flex-shrink-0">
+            <i class="fa-solid fa-recycle text-lg text-eco"></i>
+        </div>
+        <div>
+            <h1 class="text-base font-bold text-gray-900 leading-tight">SIDASI Bali</h1>
+            <p class="text-[9px] text-gray-400 font-medium tracking-wide">SISTEM DIGITAL IDENTIFIKASI SAMPAH BALI</p>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="flex-1 px-5 flex flex-col items-center justify-center text-center gap-6">
+        <div class="w-28 h-28 bg-white rounded-[2rem] shadow-sm border border-gray-100 flex items-center justify-center">
+            <i class="fa-solid fa-recycle text-5xl text-eco"></i>
+        </div>
+        <div>
+            <h2 class="text-2xl font-bold text-gray-900 mb-2">SIDASI Bali</h2>
+            <p class="text-sm text-gray-500 leading-relaxed">Lacak DNA Digital Sampah Plastik.<br>Dorong Tanggung Jawab Produsen.</p>
+        </div>
+        <a href="scan.html" class="w-full bg-eco text-white font-semibold py-4 px-8 rounded-2xl shadow-sm hover:brightness-110 transition flex items-center justify-center gap-2 mt-2">
+            Mulai Pindai <i class="fa-solid fa-arrow-right"></i>
+        </a>
+        
+        <!-- Pentahelix -->
+        <div class="mt-4 w-full">
+            <p class="text-[10px] text-gray-400 font-semibold uppercase tracking-widest mb-3">Kolaborasi Pentahelix</p>
+            <div class="flex justify-between items-center">
+                <div class="flex flex-col items-center gap-1.5">
+                    <div class="w-10 h-10 rounded-xl bg-white border border-gray-100 flex items-center justify-center shadow-sm"><i class="fa-solid fa-graduation-cap text-eco text-sm"></i></div>
+                    <span class="text-[8px] font-medium text-gray-400">Akademisi</span>
+                </div>
+                <div class="flex flex-col items-center gap-1.5">
+                    <div class="w-10 h-10 rounded-xl bg-white border border-gray-100 flex items-center justify-center shadow-sm"><i class="fa-solid fa-bullhorn text-eco text-sm"></i></div>
+                    <span class="text-[8px] font-medium text-gray-400">Media</span>
+                </div>
+                <div class="flex flex-col items-center gap-1.5">
+                    <div class="w-10 h-10 rounded-xl bg-white border border-gray-100 flex items-center justify-center shadow-sm"><i class="fa-solid fa-industry text-eco text-sm"></i></div>
+                    <span class="text-[8px] font-medium text-gray-400">Industri</span>
+                </div>
+                <div class="flex flex-col items-center gap-1.5">
+                    <div class="w-10 h-10 rounded-xl bg-white border border-gray-100 flex items-center justify-center shadow-sm"><i class="fa-solid fa-users text-eco text-sm"></i></div>
+                    <span class="text-[8px] font-medium text-gray-400">Komunitas</span>
+                </div>
+                <div class="flex flex-col items-center gap-1.5">
+                    <div class="w-10 h-10 rounded-xl bg-white border border-gray-100 flex items-center justify-center shadow-sm"><i class="fa-solid fa-building-columns text-eco text-sm"></i></div>
+                    <span class="text-[8px] font-medium text-gray-400">Pemerintah</span>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Bottom Nav (Consistent) -->
+    <nav class="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-100 max-w-md mx-auto z-50">
+        <div class="flex items-end justify-around px-4 pt-2 pb-3">
+            <a href="index.html" class="flex flex-col items-center gap-0.5 text-eco">
+                <i class="fa-solid fa-house text-lg"></i>
+                <span class="text-[9px] font-semibold mt-0.5">Beranda</span>
+            </a>
+            <a href="scan.html" class="flex flex-col items-center -mt-5">
+                <div class="w-14 h-14 bg-eco rounded-2xl flex items-center justify-center shadow-lg shadow-eco/30 text-white mb-0.5 hover:scale-105 transition-transform">
+                    <i class="fa-solid fa-qrcode text-2xl"></i>
+                </div>
+                <span class="text-[9px] font-semibold text-eco">Scan</span>
+            </a>
+            <a href="dashboard.html" class="flex flex-col items-center gap-0.5 text-gray-400 hover:text-eco transition-colors">
+                <i class="fa-solid fa-clipboard-list text-lg"></i>
+                <span class="text-[9px] font-medium mt-0.5">Laporan</span>
+            </a>
+        </div>
+    </nav>
+</body>
+</html>

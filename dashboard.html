@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Laporan - SIDASI Bali</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: { ocean: '#006994', eco: '#22963E', ecoLight: '#E8F5E9', ecoDark: '#1B7A31', warning: '#F59E0B', bg: '#F5F7F5' },
+                    fontFamily: { sans: ['Poppins', 'sans-serif'] }
+                }
+            }
+        }
+    </script>
+    <style>
+        body { font-family: 'Poppins', sans-serif; background: #F5F7F5; }
+        ::-webkit-scrollbar { display: none; }
+    </style>
+</head>
+<body class="antialiased text-gray-800 min-h-screen flex flex-col max-w-md mx-auto relative pb-24 bg-bg">
+
+    <!-- Header -->
+    <header class="px-5 pt-6 pb-3 flex items-center justify-between">
+        <div class="flex items-center gap-3">
+            <div class="w-10 h-10 bg-ecoLight rounded-2xl flex items-center justify-center flex-shrink-0">
+                <i class="fa-solid fa-recycle text-lg text-eco"></i>
+            </div>
+            <div>
+                <h1 class="text-base font-bold text-gray-900 leading-tight">SIDASI Bali</h1>
+                <p class="text-[9px] text-gray-400 font-medium tracking-wide">LAPORAN & EDUKASI</p>
+            </div>
+        </div>
+        <div class="w-10 h-10 rounded-2xl bg-white overflow-hidden border-2 border-eco/30 shadow-sm">
+            <img src="https://ui-avatars.com/api/?name=K&background=E8F5E9&color=22963E&bold=true&size=80" alt="K" class="w-full h-full object-cover">
+        </div>
+    </header>
+
+    <!-- Greeting -->
+    <div class="px-5 mt-2 mb-1">
+        <p class="text-xs text-gray-400 font-medium">Selamat datang 👋</p>
+        <h2 class="text-xl font-bold text-gray-900 leading-tight">Kenzie</h2>
+    </div>
+
+    <!-- Main Content -->
+    <main class="flex-1 px-5 flex flex-col gap-5 mt-3">
+
+        <!-- Poin Card — GREEN -->
+        <div class="bg-eco rounded-[1.75rem] p-5 text-white shadow-lg shadow-eco/20 relative overflow-hidden">
+            <div class="absolute -right-6 -top-6 w-28 h-28 rounded-full bg-white/10"></div>
+            <div class="absolute -right-2 top-10 w-16 h-16 rounded-full bg-white/5"></div>
+
+            <div class="relative z-10 flex items-center justify-between">
+                <div>
+                    <p class="text-[11px] text-white/80 font-medium mb-1">Total Poin</p>
+                    <h2 class="text-4xl font-extrabold tracking-tight leading-none" id="pointsDisplay">2,500</h2>
+                </div>
+                <div class="flex flex-col items-center gap-1.5">
+                    <div class="w-12 h-12 bg-white/20 backdrop-blur-sm rounded-2xl flex items-center justify-center">
+                        <i class="fa-solid fa-medal text-warning text-2xl drop-shadow"></i>
+                    </div>
+                    <span class="text-[9px] font-semibold text-white/90">Kontributor Ahli</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Two Mini Stats -->
+        <div class="grid grid-cols-2 gap-3">
+            <div class="bg-white rounded-2xl p-4 border border-gray-100 shadow-sm">
+                <div class="flex items-center gap-2 mb-2">
+                    <div class="w-8 h-8 rounded-xl bg-blue-50 flex items-center justify-center">
+                        <i class="fa-solid fa-scale-balanced text-ocean text-sm"></i>
+                    </div>
+                    <span class="text-[10px] text-gray-400 font-medium">Dilaporkan</span>
+                </div>
+                <div class="flex items-end gap-1">
+                    <span class="text-2xl font-bold text-gray-900">12</span>
+                    <span class="text-xs text-gray-400 mb-1 font-medium">kg</span>
+                </div>
+                <div class="w-full bg-gray-100 rounded-full h-1.5 mt-2">
+                    <div class="bg-ocean h-1.5 rounded-full" style="width: 60%;"></div>
+                </div>
+            </div>
+            <div class="bg-white rounded-2xl p-4 border border-gray-100 shadow-sm">
+                <div class="flex items-center gap-2 mb-2">
+                    <div class="w-8 h-8 rounded-xl bg-ecoLight flex items-center justify-center">
+                        <i class="fa-solid fa-leaf text-eco text-sm"></i>
+                    </div>
+                    <span class="text-[10px] text-gray-400 font-medium">Total Scan</span>
+                </div>
+                <div class="flex items-end gap-1">
+                    <span class="text-2xl font-bold text-gray-900" id="scanCount">5</span>
+                    <span class="text-xs text-gray-400 mb-1 font-medium">kali</span>
+                </div>
+                <div class="w-full bg-gray-100 rounded-full h-1.5 mt-2">
+                    <div class="bg-eco h-1.5 rounded-full" style="width: 50%;"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Riwayat Laporan -->
+        <div>
+            <div class="flex justify-between items-center mb-3 px-1">
+                <h3 class="font-semibold text-sm text-gray-900">Riwayat Laporan</h3>
+                <a href="#" class="text-[11px] text-eco font-semibold">Lihat Semua</a>
+            </div>
+            <div class="space-y-3" id="historyList"></div>
+        </div>
+
+    </main>
+
+    <!-- Bottom Nav (Consistent) -->
+    <nav class="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-100 max-w-md mx-auto z-50">
+        <div class="flex items-end justify-around px-4 pt-2 pb-3">
+            <a href="index.html" class="flex flex-col items-center gap-0.5 text-gray-400 hover:text-eco transition-colors">
+                <i class="fa-solid fa-house text-lg"></i>
+                <span class="text-[9px] font-medium mt-0.5">Beranda</span>
+            </a>
+            <a href="scan.html" class="flex flex-col items-center -mt-5">
+                <div class="w-14 h-14 bg-eco rounded-2xl flex items-center justify-center shadow-lg shadow-eco/30 text-white mb-0.5 hover:scale-105 transition-transform">
+                    <i class="fa-solid fa-qrcode text-2xl"></i>
+                </div>
+                <span class="text-[9px] font-semibold text-eco">Scan</span>
+            </a>
+            <a href="dashboard.html" class="flex flex-col items-center gap-0.5 text-eco">
+                <i class="fa-solid fa-clipboard-list text-lg"></i>
+                <span class="text-[9px] font-semibold mt-0.5">Laporan</span>
+            </a>
+        </div>
+    </nav>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            let points = localStorage.getItem('sidasi_points');
+            if (!points) { points = 2500; localStorage.setItem('sidasi_points', points); }
+            document.getElementById('pointsDisplay').innerText = parseInt(points).toLocaleString('en-US');
+
+            const historyList = document.getElementById('historyList');
+            let history = JSON.parse(localStorage.getItem('sidasi_history')) || [];
+
+            if (history.length === 0) {
+                history = [{ type: "Sampah Plastik (PET)", date: "01 January 2026", location: "Denpasar Timur" }];
+            }
+
+            document.getElementById('scanCount').innerText = history.length;
+
+            historyList.innerHTML = '';
+            history.forEach(item => {
+                const div = document.createElement('div');
+                div.className = 'bg-white p-4 rounded-2xl border border-gray-100 shadow-sm flex items-center gap-4 hover:shadow-md transition-shadow';
+                div.innerHTML = `
+                    <div class="w-11 h-11 rounded-2xl bg-ecoLight flex items-center justify-center shrink-0">
+                        <i class="fa-solid fa-bottle-water text-eco text-lg"></i>
+                    </div>
+                    <div class="flex-1 min-w-0">
+                        <h4 class="text-sm font-semibold text-gray-900 truncate">${item.type}</h4>
+                        <p class="text-[10px] text-gray-400 mt-0.5 flex items-center gap-2 flex-wrap">
+                            <span><i class="fa-regular fa-calendar mr-0.5"></i>${item.date}</span>
+                            <span><i class="fa-solid fa-location-dot text-eco mr-0.5"></i>${item.location}</span>
+                        </p>
+                    </div>
+                    <i class="fa-solid fa-chevron-right text-gray-300 text-xs shrink-0"></i>
+                `;
+                historyList.appendChild(div);
+            });
+        });
+    </script>
+</body>
+</html>

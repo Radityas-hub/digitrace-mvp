@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Scan - SIDASI Bali</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: { ocean: '#006994', eco: '#22963E', ecoLight: '#E8F5E9', warning: '#F59E0B', bg: '#F5F7F5' },
+                    fontFamily: { sans: ['Poppins', 'sans-serif'] }
+                }
+            }
+        }
+    </script>
+    <style>
+        body { font-family: 'Poppins', sans-serif; background: #F5F7F5; }
+        .viewfinder { position: relative; }
+        .viewfinder-corner { position: absolute; width: 30px; height: 30px; border-color: #22963E; border-style: solid; border-width: 0; }
+        .tl { top: 0; left: 0; border-top-width: 3px; border-left-width: 3px; border-top-left-radius: 12px; }
+        .tr { top: 0; right: 0; border-top-width: 3px; border-right-width: 3px; border-top-right-radius: 12px; }
+        .bl { bottom: 0; left: 0; border-bottom-width: 3px; border-left-width: 3px; border-bottom-left-radius: 12px; }
+        .br { bottom: 0; right: 0; border-bottom-width: 3px; border-right-width: 3px; border-bottom-right-radius: 12px; }
+        ::-webkit-scrollbar { display: none; }
+    </style>
+</head>
+<body class="antialiased text-gray-800 min-h-screen flex flex-col max-w-md mx-auto relative pb-24 bg-bg">
+
+    <!-- Header -->
+    <header class="px-5 pt-6 pb-3 flex items-center gap-3">
+        <div class="w-10 h-10 bg-ecoLight rounded-2xl flex items-center justify-center flex-shrink-0">
+            <i class="fa-solid fa-recycle text-lg text-eco"></i>
+        </div>
+        <div>
+            <h1 class="text-base font-bold text-gray-900 leading-tight">SIDASI Bali</h1>
+            <p class="text-[9px] text-gray-400 font-medium tracking-wide">SCAN & IDENTIFIKASI SAMPAH</p>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="flex-1 px-5 py-4 flex flex-col gap-5">
+        
+        <!-- Scanner Box -->
+        <div class="bg-white p-4 rounded-3xl border border-gray-100 shadow-sm flex flex-col items-center">
+            
+            <!-- Camera Viewfinder -->
+            <div class="w-full h-52 bg-black rounded-2xl relative mb-4 flex items-center justify-center overflow-hidden">
+                
+                <!-- Video Stream (Real Camera) -->
+                <video id="cameraStream" autoplay playsinline class="w-full h-full object-cover hidden"></video>
+                
+                <!-- Viewfinder Frame -->
+                <div class="absolute inset-4 viewfinder pointer-events-none z-10" id="viewfinderFrame">
+                    <div class="viewfinder-corner tl"></div>
+                    <div class="viewfinder-corner tr"></div>
+                    <div class="viewfinder-corner bl"></div>
+                    <div class="viewfinder-corner br"></div>
+                </div>
+                
+                <!-- Scanning Animation Line -->
+                <div id="scanOverlay" class="absolute left-0 right-0 h-0.5 bg-eco shadow-[0_0_10px_#22963E] hidden z-20" style="top: 0%"></div>
+                
+                <!-- Fallback -->
+                <div id="cameraFallback" class="absolute inset-0 bg-gray-900 flex flex-col justify-center items-center gap-2 z-0">
+                    <i class="fa-solid fa-camera text-4xl text-gray-600"></i>
+                    <span class="text-[10px] text-gray-500 font-medium">Memuat Kamera...</span>
+                </div>
+            </div>
+            
+            <p id="scanInstruction" class="text-xs text-gray-400 mb-4 text-center">Arahkan barcode ke dalam kotak</p>
+            
+            <button id="scanBtn" class="w-full bg-eco text-white font-semibold py-3.5 px-6 rounded-2xl hover:brightness-110 transition flex items-center justify-center gap-2 shadow-sm">
+                <i class="fa-solid fa-qrcode"></i> <span id="btnText">SCAN BARCODE</span>
+            </button>
+        </div>
+
+        <!-- Result Box -->
+        <div id="resultBox" class="bg-white rounded-3xl border border-gray-100 p-5 shadow-sm hidden flex-col gap-4">
+            <h3 class="font-bold text-gray-900 text-sm flex items-center gap-2">
+                <i class="fa-solid fa-circle-check text-eco"></i> Hasil Identifikasi
+            </h3>
+            
+            <div class="flex flex-col gap-3 text-sm">
+                <div class="flex justify-between items-start">
+                    <span class="text-gray-400 font-medium text-xs pt-0.5">Produsen</span>
+                    <span class="font-semibold text-gray-900 text-xs text-right">PT. TIRTA INDO BEVERAGE</span>
+                </div>
+                <div class="flex justify-between items-start">
+                    <span class="text-gray-400 font-medium text-xs pt-0.5">Jenis Sampah</span>
+                    <span class="font-semibold text-gray-900 text-xs flex items-center gap-1.5">
+                        <i class="fa-solid fa-bottle-water text-eco"></i> Botol Plastik (PET)
+                    </span>
+                </div>
+                <div class="flex justify-between items-start">
+                    <span class="text-gray-400 font-medium text-xs pt-0.5">Distribusi</span>
+                    <span class="font-semibold text-gray-900 text-xs flex items-center gap-1.5">
+                        <i class="fa-solid fa-location-dot text-eco"></i> Bali Selatan
+                    </span>
+                </div>
+                <div class="flex justify-between items-center mt-1 pt-3 border-t border-gray-50">
+                    <span class="text-gray-400 font-medium text-xs">Status Produsen</span>
+                    <span class="text-warning font-semibold flex items-center gap-1 text-[11px] bg-orange-50 px-2.5 py-1.5 rounded-lg border border-orange-100">
+                        <i class="fa-solid fa-triangle-exclamation"></i> Belum Berkontribusi
+                    </span>
+                </div>
+            </div>
+
+            <button id="saveBtn" class="w-full mt-2 bg-eco text-white font-semibold py-3.5 rounded-2xl hover:brightness-110 transition text-sm flex items-center justify-center gap-2 shadow-sm">
+                <i class="fa-solid fa-coins text-warning"></i> Simpan & Dapatkan Poin
+            </button>
+        </div>
+    </main>
+
+    <!-- Bottom Nav (Consistent) -->
+    <nav class="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-100 max-w-md mx-auto z-50">
+        <div class="flex items-end justify-around px-4 pt-2 pb-3">
+            <a href="index.html" class="flex flex-col items-center gap-0.5 text-gray-400 hover:text-eco transition-colors">
+                <i class="fa-solid fa-house text-lg"></i>
+                <span class="text-[9px] font-medium mt-0.5">Beranda</span>
+            </a>
+            <a href="scan.html" class="flex flex-col items-center -mt-5">
+                <div class="w-14 h-14 bg-eco rounded-2xl flex items-center justify-center shadow-lg shadow-eco/30 text-white mb-0.5 hover:scale-105 transition-transform">
+                    <i class="fa-solid fa-qrcode text-2xl"></i>
+                </div>
+                <span class="text-[9px] font-semibold text-eco">Scan</span>
+            </a>
+            <a href="dashboard.html" class="flex flex-col items-center gap-0.5 text-gray-400 hover:text-eco transition-colors">
+                <i class="fa-solid fa-clipboard-list text-lg"></i>
+                <span class="text-[9px] font-medium mt-0.5">Laporan</span>
+            </a>
+        </div>
+    </nav>
+
+    <script>
+        const scanBtn = document.getElementById('scanBtn');
+        const btnText = document.getElementById('btnText');
+        const resultBox = document.getElementById('resultBox');
+        const saveBtn = document.getElementById('saveBtn');
+        const cameraStream = document.getElementById('cameraStream');
+        const cameraFallback = document.getElementById('cameraFallback');
+        const scanOverlay = document.getElementById('scanOverlay');
+        const scanInstruction = document.getElementById('scanInstruction');
+
+        // Setup Live Camera
+        async function setupCamera() {
+            try {
+                const stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment' } });
+                cameraStream.srcObject = stream;
+                cameraStream.addEventListener('play', () => {
+                    cameraStream.classList.remove('hidden');
+                    cameraFallback.classList.add('hidden');
+                });
+            } catch (err) {
+                console.error("Gagal mengakses kamera:", err);
+                cameraFallback.querySelector('i').className = "fa-solid fa-video-slash text-4xl text-gray-600";
+                cameraFallback.querySelector('span').innerText = "Kamera Tidak Tersedia";
+            }
+        }
+        setupCamera();
+
+        let scanInterval;
+
+        scanBtn.addEventListener('click', () => {
+            if (btnText.innerText === 'SCAN ULANG') {
+                resultBox.classList.remove('flex');
+                resultBox.classList.add('hidden');
+                scanBtn.classList.remove('bg-gray-200', 'text-gray-700');
+                scanBtn.classList.add('bg-eco', 'text-white');
+                btnText.innerText = 'SCAN BARCODE';
+                scanOverlay.classList.add('hidden');
+                scanInstruction.innerText = "Arahkan barcode ke dalam kotak";
+                return;
+            }
+
+            btnText.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i> Menganalisis DNA Digital...';
+            scanBtn.classList.add('opacity-80');
+            scanInstruction.innerText = "Memproses identifikasi...";
+
+            scanOverlay.classList.remove('hidden');
+            let position = 0, direction = 1;
+            scanInterval = setInterval(() => {
+                position += direction * 3;
+                if (position > 95) direction = -1;
+                if (position < 0) direction = 1;
+                scanOverlay.style.top = `${position}%`;
+            }, 30);
+
+            setTimeout(() => {
+                clearInterval(scanInterval);
+                scanOverlay.classList.add('hidden');
+                scanInstruction.innerHTML = "<span class='text-eco font-semibold'><i class='fa-solid fa-circle-check'></i> Pemindaian Berhasil</span>";
+
+                btnText.innerText = 'SCAN ULANG';
+                scanBtn.classList.remove('opacity-80', 'bg-eco', 'text-white');
+                scanBtn.classList.add('bg-gray-200', 'text-gray-700');
+
+                resultBox.classList.remove('hidden');
+                resultBox.classList.add('flex');
+            }, 2000);
+        });
+
+        saveBtn.addEventListener('click', () => {
+            saveBtn.innerHTML = '<i class="fa-solid fa-check"></i> Tersimpan!';
+            let currentPoints = parseInt(localStorage.getItem('sidasi_points')) || 2500;
+            localStorage.setItem('sidasi_points', currentPoints + 50);
+            let history = JSON.parse(localStorage.getItem('sidasi_history')) || [];
+            history.unshift({
+                type: "Botol Plastik (PET)",
+                date: new Date().toLocaleDateString('id-ID', { day: '2-digit', month: 'long', year: 'numeric' }),
+                location: "Denpasar Timur"
+            });
+            localStorage.setItem('sidasi_history', JSON.stringify(history));
+            setTimeout(() => { window.location.href = 'dashboard.html'; }, 800);
+        });
+    </script>
+</body>
+</html>
