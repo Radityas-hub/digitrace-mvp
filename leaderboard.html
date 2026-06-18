@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Leaderboard - DIGITRACE</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        ocean: '#006994',
+                        eco: '#22963E',
+                        ecoLight: '#E8F5E9',
+                        ecoDark: '#1B7A31',
+                        warning: '#F59E0B',
+                        bg: '#F5F7F5'
+                    },
+                    fontFamily: { sans: ['Poppins', 'sans-serif'] }
+                }
+            }
+        }
+    </script>
+    <style>
+        body { font-family: 'Poppins', sans-serif; background: #F5F7F5; }
+        ::-webkit-scrollbar { display: none; }
+
+        /* Filter pills */
+        .filter-pill {
+            transition: all .2s;
+            border: 1.5px solid transparent;
+        }
+        .filter-pill.active {
+            background: #22963E;
+            color: #fff;
+            border-color: #22963E;
+            font-weight: 700;
+        }
+        .filter-pill:not(.active) {
+            background: #fff;
+            color: #6b7280;
+            border-color: #e5e7eb;
+        }
+
+        /* Podium bars */
+        .podium-bar-1 { height: 88px; background: #22963E; border-radius: 14px 14px 0 0; }
+        .podium-bar-2 { height: 64px; background: #4ead6a; border-radius: 14px 14px 0 0; }
+        .podium-bar-3 { height: 48px; background: #7dc898; border-radius: 14px 14px 0 0; }
+
+        /* Rank card */
+        .rank-card { transition: transform .15s; }
+        .rank-card:active { transform: scale(0.98); }
+        .rank-card.is-you {
+            background: #E8F5E9;
+            border-color: #22963E !important;
+        }
+    </style>
+</head>
+<body class="antialiased text-gray-800 min-h-screen flex flex-col max-w-md mx-auto relative pb-20 bg-bg">
+
+    <!-- Header — same as other pages -->
+    <header class="px-5 pt-6 pb-3 flex items-center justify-between">
+        <div class="flex items-center gap-3">
+            <div class="w-10 h-10 bg-ecoLight rounded-2xl flex items-center justify-center flex-shrink-0">
+                <i class="fa-solid fa-recycle text-lg text-eco"></i>
+            </div>
+            <div>
+                <h1 class="text-base font-bold text-gray-900 leading-tight">DIGITRACE</h1>
+                <p class="text-[9px] text-gray-400 font-medium tracking-wide">LEADERBOARD KONTRIBUSI</p>
+            </div>
+        </div>
+        <!-- User avatar -->
+        <div class="w-10 h-10 rounded-2xl bg-white overflow-hidden border-2 border-eco/30 shadow-sm">
+            <img src="https://ui-avatars.com/api/?name=K&background=E8F5E9&color=22963E&bold=true&size=80" alt="K" class="w-full h-full object-cover">
+        </div>
+    </header>
+
+    <main class="flex-1 px-5 flex flex-col gap-4 mt-1">
+
+        <!-- Time filter -->
+        <div class="flex gap-2">
+            <button class="filter-pill active flex-1 py-2 rounded-xl text-xs font-semibold" data-time="today" onclick="setTimeFilter(this,'today')">Hari Ini</button>
+            <button class="filter-pill flex-1 py-2 rounded-xl text-xs" data-time="week" onclick="setTimeFilter(this,'week')">7 Hari</button>
+            <button class="filter-pill flex-1 py-2 rounded-xl text-xs" data-time="all" onclick="setTimeFilter(this,'all')">Semua Waktu</button>
+        </div>
+
+        <!-- Area filter — scrollable chips -->
+        <div class="flex gap-2 overflow-x-auto pb-0.5" id="areaFilters">
+            <button class="filter-pill active flex-shrink-0 px-3.5 py-1.5 rounded-xl text-[11px] font-semibold" data-area="all" onclick="setAreaFilter(this,'all')">Semua Daerah</button>
+            <button class="filter-pill flex-shrink-0 px-3.5 py-1.5 rounded-xl text-[11px]" data-area="Denpasar" onclick="setAreaFilter(this,'Denpasar')">Denpasar</button>
+            <button class="filter-pill flex-shrink-0 px-3.5 py-1.5 rounded-xl text-[11px]" data-area="Badung" onclick="setAreaFilter(this,'Badung')">Badung</button>
+            <button class="filter-pill flex-shrink-0 px-3.5 py-1.5 rounded-xl text-[11px]" data-area="Gianyar" onclick="setAreaFilter(this,'Gianyar')">Gianyar</button>
+            <button class="filter-pill flex-shrink-0 px-3.5 py-1.5 rounded-xl text-[11px]" data-area="Buleleng" onclick="setAreaFilter(this,'Buleleng')">Buleleng</button>
+            <button class="filter-pill flex-shrink-0 px-3.5 py-1.5 rounded-xl text-[11px]" data-area="Tabanan" onclick="setAreaFilter(this,'Tabanan')">Tabanan</button>
+        </div>
+
+        <!-- Podium card — same rounded card style as dashboard -->
+        <div class="bg-eco rounded-[1.75rem] p-5 text-white shadow-lg shadow-eco/20 relative overflow-hidden">
+            <!-- Decorative blobs -->
+            <div class="absolute -right-6 -top-6 w-28 h-28 rounded-full bg-white/10 pointer-events-none"></div>
+            <div class="absolute -right-2 top-12 w-16 h-16 rounded-full bg-white/5 pointer-events-none"></div>
+
+            <p class="text-[10px] text-white/70 font-semibold uppercase tracking-widest mb-4 relative z-10">Top Kontributor</p>
+
+            <!-- Podium layout -->
+            <div class="flex items-end justify-center gap-3 relative z-10" id="podiumSection">
+
+                <!-- Rank 2 -->
+                <div class="flex flex-col items-center flex-1" id="podium2">
+                    <div class="relative mb-2">
+                        <img src="" alt="" id="avatar2"
+                             class="w-12 h-12 rounded-full object-cover ring-2 ring-white/60 shadow-md">
+                        <div class="absolute -bottom-1 left-1/2 -translate-x-1/2 bg-white text-eco text-[8px] font-bold px-1.5 py-0.5 rounded-full shadow whitespace-nowrap">
+                            <span id="pts2">0</span> poin
+                        </div>
+                    </div>
+                    <p class="text-white text-[10px] font-semibold text-center mb-1.5 truncate w-full" id="name2">—</p>
+                    <div class="podium-bar-2 w-full flex items-center justify-center">
+                        <span class="text-white font-extrabold text-xl">2</span>
+                    </div>
+                </div>
+
+                <!-- Rank 1 -->
+                <div class="flex flex-col items-center flex-1" id="podium1">
+                    <div class="relative mb-2">
+                        <i class="fa-solid fa-crown text-warning text-base absolute -top-4 left-1/2 -translate-x-1/2 drop-shadow z-10"></i>
+                        <img src="" alt="" id="avatar1"
+                             class="w-14 h-14 rounded-full object-cover ring-[3px] ring-warning shadow-lg">
+                        <div class="absolute -bottom-1 left-1/2 -translate-x-1/2 bg-warning text-white text-[8px] font-bold px-1.5 py-0.5 rounded-full shadow whitespace-nowrap">
+                            <span id="pts1">0</span> poin
+                        </div>
+                    </div>
+                    <p class="text-white text-[11px] font-bold text-center mb-1.5 truncate w-full" id="name1">—</p>
+                    <div class="podium-bar-1 w-full flex items-center justify-center">
+                        <span class="text-white font-extrabold text-2xl">1</span>
+                    </div>
+                </div>
+
+                <!-- Rank 3 -->
+                <div class="flex flex-col items-center flex-1" id="podium3">
+                    <div class="relative mb-2">
+                        <img src="" alt="" id="avatar3"
+                             class="w-12 h-12 rounded-full object-cover ring-2 ring-white/40 shadow-md">
+                        <div class="absolute -bottom-1 left-1/2 -translate-x-1/2 bg-white text-eco text-[8px] font-bold px-1.5 py-0.5 rounded-full shadow whitespace-nowrap">
+                            <span id="pts3">0</span> poin
+                        </div>
+                    </div>
+                    <p class="text-white text-[10px] font-semibold text-center mb-1.5 truncate w-full" id="name3">—</p>
+                    <div class="podium-bar-3 w-full flex items-center justify-center">
+                        <span class="text-white font-extrabold text-xl">3</span>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- Section title -->
+        <div class="flex justify-between items-center px-1">
+            <h3 class="font-semibold text-sm text-gray-900">Semua Peringkat</h3>
+            <span class="text-[11px] text-gray-400 font-medium" id="totalLabel"></span>
+        </div>
+
+        <!-- Rank list -->
+        <div class="flex flex-col gap-2.5 pb-2" id="rankList">
+            <!-- populated by JS -->
+        </div>
+
+    </main>
+
+    <!-- Bottom Nav -->
+    <nav class="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-100 max-w-md mx-auto z-50">
+        <div class="flex items-center justify-around px-3 pt-1.5 pb-4">
+            <a href="index.html" class="nav-item flex flex-col items-center gap-0.5 flex-1 py-1.5 rounded-2xl transition-all text-gray-400 hover:text-gray-600">
+                <i class="fa-solid fa-house text-[18px]"></i>
+                <span class="text-[9px] font-medium">Beranda</span>
+            </a>
+            <a href="scan.html" class="nav-item flex flex-col items-center gap-0.5 flex-1 py-1.5 rounded-2xl transition-all text-gray-400 hover:text-gray-600">
+                <i class="fa-solid fa-qrcode text-[18px]"></i>
+                <span class="text-[9px] font-medium">Scan</span>
+            </a>
+            <a href="dashboard.html" class="nav-item flex flex-col items-center gap-0.5 flex-1 py-1.5 rounded-2xl transition-all text-gray-400 hover:text-gray-600">
+                <i class="fa-solid fa-clipboard-list text-[18px]"></i>
+                <span class="text-[9px] font-medium">Laporan</span>
+            </a>
+            <a href="leaderboard.html" class="nav-item active flex flex-col items-center gap-0.5 flex-1 py-1.5 rounded-2xl transition-all">
+                <i class="fa-solid fa-trophy text-[18px]"></i>
+                <span class="text-[9px] font-semibold">Ranking</span>
+            </a>
+        </div>
+    </nav>
+    <style>
+        .nav-item { position: relative; }
+        .nav-item.active { color: #22963E; }
+        .nav-item.active::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 50%;
+            transform: translateX(-50%);
+            width: 36px; height: 3px;
+            background: #22963E;
+            border-radius: 0 0 4px 4px;
+        }
+    </style>
+
+    <script>
+    // ── Avatar colours (green-toned palette to match design system) ─────────
+    const AVATAR_BG = [
+        ['22963E','fff'],['006994','fff'],['F59E0B','fff'],['4ead6a','fff'],
+        ['1B7A31','fff'],['0891b2','fff'],['d97706','fff'],['059669','fff'],
+        ['0369a1','fff'],['7dc898','fff'],['15803d','fff'],['0284c7','fff'],
+    ];
+
+    function avatarUrl(name, idx) {
+        const [bg, col] = AVATAR_BG[idx % AVATAR_BG.length];
+        const initials = name.split(' ').map(w => w[0]).join('').slice(0,2).toUpperCase();
+        return `https://ui-avatars.com/api/?name=${encodeURIComponent(initials)}&background=${bg}&color=${col}&bold=true&size=80`;
+    }
+
+    // ── Data ─────────────────────────────────────────────────────────────────
+    const ALL_USERS = [
+        { name: 'Raka Wijaya',   points: 3850, area: 'Denpasar', isYou: false },
+        { name: 'Kenzie',        points: 2500, area: 'Denpasar', isYou: true  },
+        { name: 'Ayu Lestari',   points: 2200, area: 'Badung',   isYou: false },
+        { name: 'Made Surya',    points: 1980, area: 'Gianyar',  isYou: false },
+        { name: 'Ni Putu Sari',  points: 1740, area: 'Denpasar', isYou: false },
+        { name: 'Gede Artha',    points: 1580, area: 'Buleleng', isYou: false },
+        { name: 'Wayan Adi',     points: 1420, area: 'Tabanan',  isYou: false },
+        { name: 'Komang Putri',  points: 1210, area: 'Badung',   isYou: false },
+        { name: 'Ida Bagus Oka', points: 1050, area: 'Gianyar',  isYou: false },
+        { name: 'Nyoman Dewi',   points:  890, area: 'Buleleng', isYou: false },
+        { name: 'Ketut Bayu',    points:  730, area: 'Denpasar', isYou: false },
+        { name: 'Sri Wahyuni',   points:  610, area: 'Tabanan',  isYou: false },
+    ];
+
+    const TIME_MULT = { today: 0.15, week: 0.55, all: 1 };
+    let currentTime = 'today';
+    let currentArea = 'all';
+
+    function setTimeFilter(el, val) {
+        document.querySelectorAll('[data-time]').forEach(b => b.classList.remove('active'));
+        el.classList.add('active');
+        currentTime = val;
+        render();
+    }
+
+    function setAreaFilter(el, val) {
+        document.querySelectorAll('[data-area]').forEach(b => b.classList.remove('active'));
+        el.classList.add('active');
+        currentArea = val;
+        render();
+    }
+
+    function render() {
+        const mult = TIME_MULT[currentTime];
+
+        let data = ALL_USERS.map((u, i) => ({
+            ...u,
+            points: Math.max(10, Math.round(u.points * mult)),
+            _origIdx: i
+        }));
+
+        if (currentArea !== 'all') {
+            data = data.filter(u => u.area === currentArea);
+        }
+
+        data.sort((a, b) => b.points - a.points);
+
+        // ── Podium ───────────────────────────────────────────────────────────
+        // order: left=2nd, center=1st, right=3rd
+        [[2, data[1]], [1, data[0]], [3, data[2]]].forEach(([rankNum, user]) => {
+            const nameEl = document.getElementById(`name${rankNum}`);
+            const ptsEl  = document.getElementById(`pts${rankNum}`);
+            const avEl   = document.getElementById(`avatar${rankNum}`);
+            const block  = document.getElementById(`podium${rankNum}`);
+
+            if (user) {
+                nameEl.textContent = user.name;
+                ptsEl.textContent  = user.points.toLocaleString('id-ID');
+                avEl.src           = avatarUrl(user.name, user._origIdx);
+                avEl.alt           = user.name;
+                block.style.opacity = '1';
+            } else {
+                nameEl.textContent  = '—';
+                ptsEl.textContent   = '0';
+                avEl.src            = '';
+                block.style.opacity = '0.3';
+            }
+        });
+
+        // ── Rank list ─────────────────────────────────────────────────────────
+        const rankList = document.getElementById('rankList');
+        const totalLabel = document.getElementById('totalLabel');
+        rankList.innerHTML = '';
+
+        if (data.length === 0) {
+            totalLabel.textContent = '';
+            rankList.innerHTML = `
+                <div class="flex flex-col items-center justify-center py-10 gap-3 text-gray-400">
+                    <div class="w-14 h-14 rounded-2xl bg-white border border-gray-100 shadow-sm flex items-center justify-center">
+                        <i class="fa-solid fa-magnifying-glass text-2xl opacity-40"></i>
+                    </div>
+                    <p class="text-sm">Belum ada data untuk daerah ini</p>
+                </div>`;
+            return;
+        }
+
+        totalLabel.textContent = `${data.length} pengguna`;
+
+        data.forEach((user, idx) => {
+            const rank  = idx + 1;
+            const isYou = user.isYou;
+
+            let rankBadge = '';
+            if (rank === 1)
+                rankBadge = `<div class="w-7 h-7 rounded-xl bg-warning/10 flex items-center justify-center"><i class="fa-solid fa-trophy text-warning text-xs"></i></div>`;
+            else if (rank === 2)
+                rankBadge = `<div class="w-7 h-7 rounded-xl bg-gray-100 flex items-center justify-center"><i class="fa-solid fa-trophy text-gray-400 text-xs"></i></div>`;
+            else if (rank === 3)
+                rankBadge = `<div class="w-7 h-7 rounded-xl bg-orange-50 flex items-center justify-center"><i class="fa-solid fa-trophy text-orange-400 text-xs"></i></div>`;
+            else
+                rankBadge = `<div class="w-7 h-7 rounded-xl bg-gray-50 flex items-center justify-center"><span class="text-xs font-bold text-gray-400">${rank}</span></div>`;
+
+            const card = document.createElement('div');
+            card.className = `rank-card flex items-center gap-3 rounded-2xl p-3.5 border shadow-sm ${isYou ? 'is-you border-eco' : 'bg-white border-gray-100'}`;
+
+            card.innerHTML = `
+                ${rankBadge}
+                <img src="${avatarUrl(user.name, user._origIdx)}" alt="${user.name}"
+                     class="w-10 h-10 rounded-2xl object-cover flex-shrink-0">
+                <div class="flex-1 min-w-0">
+                    <div class="flex items-center gap-1.5 flex-wrap">
+                        <p class="text-sm font-semibold text-gray-900 truncate">${user.name}</p>
+                        ${isYou ? '<span class="text-[9px] bg-ecoLight text-eco font-bold px-1.5 py-0.5 rounded-full flex-shrink-0">KAMU</span>' : ''}
+                    </div>
+                    <p class="text-[10px] text-gray-400 flex items-center gap-1 mt-0.5">
+                        <i class="fa-solid fa-location-dot text-eco text-[9px]"></i>${user.area}
+                    </p>
+                </div>
+                <div class="flex-shrink-0 text-right">
+                    <p class="text-sm font-bold text-eco">${user.points.toLocaleString('id-ID')}</p>
+                    <p class="text-[9px] text-gray-400 font-medium">poin</p>
+                </div>
+            `;
+
+            rankList.appendChild(card);
+        });
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+        const myPoints = parseInt(localStorage.getItem('sidasi_points')) || 2500;
+        const myIdx = ALL_USERS.findIndex(u => u.isYou);
+        if (myIdx !== -1) ALL_USERS[myIdx].points = myPoints;
+        render();
+    });
+    </script>
+</body>
+</html>

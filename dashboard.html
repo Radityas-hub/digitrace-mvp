@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Laporan - SIDASI Bali</title>
+    <title>Laporan - DIGITRACE</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -31,7 +31,7 @@
                 <i class="fa-solid fa-recycle text-lg text-eco"></i>
             </div>
             <div>
-                <h1 class="text-base font-bold text-gray-900 leading-tight">SIDASI Bali</h1>
+                <h1 class="text-base font-bold text-gray-900 leading-tight">DIGITRACE</h1>
                 <p class="text-[9px] text-gray-400 font-medium tracking-wide">LAPORAN & EDUKASI</p>
             </div>
         </div>
@@ -102,6 +102,30 @@
             </div>
         </div>
 
+        <!-- Rank Banner -->
+        <a href="leaderboard.html" class="block">
+            <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-4 flex items-center gap-4 hover:shadow-md transition-shadow active:scale-[0.98] transition-transform">
+                <!-- Rank badge -->
+                <div class="flex-shrink-0 w-14 h-14 rounded-2xl bg-ecoLight flex flex-col items-center justify-center gap-0.5">
+                    <i class="fa-solid fa-ranking-star text-eco text-xl"></i>
+                </div>
+                <!-- Info -->
+                <div class="flex-1 min-w-0">
+                    <p class="text-[10px] text-gray-400 font-medium">Posisimu di Denpasar</p>
+                    <div class="flex items-center gap-2 mt-0.5 flex-wrap">
+                        <span class="text-xl font-extrabold text-gray-900 leading-tight" id="myRankDisplay">#2</span>
+                        <span class="text-[10px] text-eco font-semibold bg-ecoLight px-2 py-0.5 rounded-full" id="myRankLabel">dari 5 pengguna</span>
+                    </div>
+                    <p class="text-[10px] text-gray-400 mt-1">Kamu <span class="text-eco font-semibold" id="rankGapText">1.350 poin</span> di bawah #1</p>
+                </div>
+                <!-- Arrow -->
+                <div class="flex-shrink-0 flex flex-col items-end gap-1">
+                    <span class="text-[9px] font-bold text-white bg-eco px-2.5 py-1 rounded-full" id="rankTierBadge">Kontributor Ahli</span>
+                    <i class="fa-solid fa-chevron-right text-gray-300 text-xs mt-1"></i>
+                </div>
+            </div>
+        </a>
+
         <!-- Riwayat Laporan -->
         <div>
             <div class="flex justify-between items-center mb-3 px-1">
@@ -113,31 +137,101 @@
 
     </main>
 
-    <!-- Bottom Nav (Consistent) -->
+    <!-- Bottom Nav -->
     <nav class="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-100 max-w-md mx-auto z-50">
-        <div class="flex items-end justify-around px-4 pt-2 pb-3">
-            <a href="index.html" class="flex flex-col items-center gap-0.5 text-gray-400 hover:text-eco transition-colors">
-                <i class="fa-solid fa-house text-lg"></i>
-                <span class="text-[9px] font-medium mt-0.5">Beranda</span>
+        <div class="flex items-center justify-around px-3 pt-1.5 pb-4">
+            <a href="index.html" class="nav-item flex flex-col items-center gap-0.5 flex-1 py-1.5 rounded-2xl transition-all text-gray-400 hover:text-gray-600">
+                <i class="fa-solid fa-house text-[18px]"></i>
+                <span class="text-[9px] font-medium">Beranda</span>
             </a>
-            <a href="scan.html" class="flex flex-col items-center -mt-5">
-                <div class="w-14 h-14 bg-eco rounded-2xl flex items-center justify-center shadow-lg shadow-eco/30 text-white mb-0.5 hover:scale-105 transition-transform">
-                    <i class="fa-solid fa-qrcode text-2xl"></i>
-                </div>
-                <span class="text-[9px] font-semibold text-eco">Scan</span>
+            <a href="scan.html" class="nav-item flex flex-col items-center gap-0.5 flex-1 py-1.5 rounded-2xl transition-all text-gray-400 hover:text-gray-600">
+                <i class="fa-solid fa-qrcode text-[18px]"></i>
+                <span class="text-[9px] font-medium">Scan</span>
             </a>
-            <a href="dashboard.html" class="flex flex-col items-center gap-0.5 text-eco">
-                <i class="fa-solid fa-clipboard-list text-lg"></i>
-                <span class="text-[9px] font-semibold mt-0.5">Laporan</span>
+            <a href="dashboard.html" class="nav-item active flex flex-col items-center gap-0.5 flex-1 py-1.5 rounded-2xl transition-all">
+                <i class="fa-solid fa-clipboard-list text-[18px]"></i>
+                <span class="text-[9px] font-semibold">Laporan</span>
+            </a>
+            <a href="leaderboard.html" class="nav-item flex flex-col items-center gap-0.5 flex-1 py-1.5 rounded-2xl transition-all text-gray-400 hover:text-gray-600">
+                <i class="fa-solid fa-trophy text-[18px]"></i>
+                <span class="text-[9px] font-medium">Ranking</span>
             </a>
         </div>
     </nav>
+    <style>
+        .nav-item { position: relative; }
+        .nav-item.active { color: #22963E; }
+        .nav-item.active::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 50%;
+            transform: translateX(-50%);
+            width: 36px; height: 3px;
+            background: #22963E;
+            border-radius: 0 0 4px 4px;
+        }
+    </style>
 
     <script>
+        // Mirror data from leaderboard so rank is always consistent
+        const ALL_USERS = [
+            { name: 'Raka Wijaya',   points: 3850, area: 'Denpasar', isYou: false },
+            { name: 'Kenzie',        points: 2500, area: 'Denpasar', isYou: true  },
+            { name: 'Ayu Lestari',   points: 2200, area: 'Badung',   isYou: false },
+            { name: 'Made Surya',    points: 1980, area: 'Gianyar',  isYou: false },
+            { name: 'Ni Putu Sari',  points: 1740, area: 'Denpasar', isYou: false },
+            { name: 'Gede Artha',    points: 1580, area: 'Buleleng', isYou: false },
+            { name: 'Wayan Adi',     points: 1420, area: 'Tabanan',  isYou: false },
+            { name: 'Komang Putri',  points: 1210, area: 'Badung',   isYou: false },
+            { name: 'Ida Bagus Oka', points: 1050, area: 'Gianyar',  isYou: false },
+            { name: 'Nyoman Dewi',   points:  890, area: 'Buleleng', isYou: false },
+            { name: 'Ketut Bayu',    points:  730, area: 'Denpasar', isYou: false },
+            { name: 'Sri Wahyuni',   points:  610, area: 'Tabanan',  isYou: false },
+        ];
+
+        const TIERS = [
+            { min: 3000, label: 'Kontributor Elite',   bg: 'bg-warning',  text: 'text-white' },
+            { min: 2000, label: 'Kontributor Ahli',    bg: 'bg-eco',      text: 'text-white' },
+            { min: 1000, label: 'Kontributor Aktif',   bg: 'bg-ocean',    text: 'text-white' },
+            { min: 0,    label: 'Kontributor Pemula',  bg: 'bg-gray-400', text: 'text-white' },
+        ];
+
+        function getTier(pts) {
+            return TIERS.find(t => pts >= t.min) || TIERS[TIERS.length - 1];
+        }
+
         document.addEventListener('DOMContentLoaded', () => {
-            let points = localStorage.getItem('sidasi_points');
-            if (!points) { points = 2500; localStorage.setItem('sidasi_points', points); }
-            document.getElementById('pointsDisplay').innerText = parseInt(points).toLocaleString('en-US');
+            let myPoints = parseInt(localStorage.getItem('sidasi_points')) || 2500;
+            document.getElementById('pointsDisplay').innerText = myPoints.toLocaleString('en-US');
+
+            // Update "Kenzie" points with live value
+            const meIdx = ALL_USERS.findIndex(u => u.isYou);
+            if (meIdx !== -1) ALL_USERS[meIdx].points = myPoints;
+
+            // Compute rank within same area
+            const myUser = ALL_USERS[meIdx];
+            const sameArea = ALL_USERS.filter(u => u.area === myUser.area)
+                .sort((a, b) => b.points - a.points);
+            const myRank = sameArea.findIndex(u => u.isYou) + 1;
+            const leader = sameArea[0];
+            const gap = leader && !myUser.isYou ? leader.points - myPoints
+                      : sameArea[1] ? myPoints - sameArea[1].points : 0;
+
+            document.getElementById('myRankDisplay').innerText = `#${myRank}`;
+            document.getElementById('myRankLabel').innerText = `dari ${sameArea.length} pengguna`;
+            if (myRank === 1) {
+                document.getElementById('rankGapText').closest('p').innerHTML =
+                    `<span class="text-[10px] text-gray-400">Kamu </span><span class="text-eco font-semibold text-[10px]">memimpin di daerahmu 🏆</span>`;
+            } else {
+                document.getElementById('rankGapText').innerText =
+                    `${(leader.points - myPoints).toLocaleString('id-ID')} poin`;
+            }
+
+            // Tier badge
+            const tier = getTier(myPoints);
+            const badge = document.getElementById('rankTierBadge');
+            badge.textContent = tier.label;
+            badge.className = `text-[9px] font-bold px-2.5 py-1 rounded-full ${tier.bg} ${tier.text}`;
 
             const historyList = document.getElementById('historyList');
             let history = JSON.parse(localStorage.getItem('sidasi_history')) || [];
