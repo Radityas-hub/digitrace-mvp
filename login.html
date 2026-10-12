@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Masuk - DIGITRACE</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: { eco: '#22963E', ecoLight: '#E8F5E9', bg: '#F5F7F5' },
+                    fontFamily: { sans: ['Poppins', 'sans-serif'] }
+                }
+            }
+        }
+    </script>
+    <style>body { font-family: 'Poppins', sans-serif; background: #F5F7F5; }</style>
+</head>
+<body class="min-h-screen bg-bg text-gray-800 antialiased">
+    <main class="mx-auto flex min-h-screen max-w-md flex-col px-5 py-7">
+        <a href="index.html" class="mb-10 flex items-center gap-3 self-start" aria-label="Kembali ke beranda">
+            <div class="flex h-11 w-11 items-center justify-center rounded-2xl bg-ecoLight">
+                <i class="fa-solid fa-recycle text-xl text-eco"></i>
+            </div>
+            <div>
+                <h1 class="text-lg font-bold leading-tight text-gray-900">DIGITRACE</h1>
+                <p class="text-[9px] font-medium tracking-wide text-gray-400">LAPORAN & EDUKASI SAMPAH</p>
+            </div>
+        </a>
+
+        <section class="flex-1">
+            <div class="mb-7">
+                <p class="mb-1 text-sm font-medium text-eco">Selamat datang</p>
+                <h2 class="text-3xl font-bold leading-tight text-gray-900">Masuk ke akunmu</h2>
+                <p class="mt-2 text-sm leading-relaxed text-gray-500">Gunakan akun yang telah dibuatkan oleh admin DIGITRACE.</p>
+            </div>
+
+            <div id="configNotice" class="hidden mb-5 rounded-2xl border border-amber-200 bg-amber-50 p-4 text-xs font-medium leading-relaxed text-amber-800"></div>
+
+            <form id="loginForm" class="rounded-3xl border border-gray-100 bg-white p-5 shadow-sm" novalidate>
+                <div class="mb-4">
+                    <label for="username" class="mb-2 block text-xs font-semibold text-gray-700">Username</label>
+                    <div class="flex items-center gap-3 rounded-2xl border border-gray-200 bg-white px-4 py-3 focus-within:border-eco focus-within:ring-2 focus-within:ring-eco/10">
+                        <i class="fa-solid fa-user text-sm text-eco"></i>
+                        <input id="username" name="username" autocomplete="username" required minlength="3" maxlength="32" placeholder="contoh: kenzie" class="min-w-0 flex-1 border-0 bg-transparent text-sm font-medium text-gray-900 outline-none placeholder:text-gray-300">
+                    </div>
+                </div>
+
+                <div class="mb-5">
+                    <label for="password" class="mb-2 block text-xs font-semibold text-gray-700">Kata sandi</label>
+                    <div class="flex items-center gap-3 rounded-2xl border border-gray-200 bg-white px-4 py-3 focus-within:border-eco focus-within:ring-2 focus-within:ring-eco/10">
+                        <i class="fa-solid fa-lock text-sm text-eco"></i>
+                        <input id="password" name="password" type="password" autocomplete="current-password" required placeholder="Masukkan kata sandi" class="min-w-0 flex-1 border-0 bg-transparent text-sm font-medium text-gray-900 outline-none placeholder:text-gray-300">
+                    </div>
+                </div>
+
+                <p id="loginFeedback" class="hidden mb-4" role="alert"></p>
+
+                <button id="loginButton" type="submit" class="flex w-full items-center justify-center gap-2 rounded-2xl bg-eco px-5 py-3.5 text-sm font-semibold text-white shadow-sm transition hover:brightness-110 disabled:cursor-wait">
+                    <i class="fa-solid fa-arrow-right-to-bracket"></i> Masuk
+                </button>
+            </form>
+        </section>
+
+        <p class="pt-8 text-center text-[10px] leading-relaxed text-gray-400">Belum memiliki akun? Hubungi admin DIGITRACE untuk mendapatkan akses.</p>
+    </main>
+    <script type="module" src="js/login-page.js"></script>
+</body>
+</html>
+

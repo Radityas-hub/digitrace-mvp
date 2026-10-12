@@ -1,0 +1,4 @@
+.vscode/
+.openai/
+dist/
+digitrace-site-source.tar.gz

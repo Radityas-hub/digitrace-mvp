@@ -3,265 +3,33 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Laporan - DIGITRACE</title>
+    <title>Dashboard - DIGITRACE</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: { ocean: '#006994', eco: '#22963E', ecoLight: '#E8F5E9', ecoDark: '#1B7A31', warning: '#F59E0B', bg: '#F5F7F5' },
-                    fontFamily: { sans: ['Poppins', 'sans-serif'] }
-                }
-            }
-        }
-    </script>
-    <style>
-        body { font-family: 'Poppins', sans-serif; background: #F5F7F5; }
-        ::-webkit-scrollbar { display: none; }
-    </style>
+    <script>tailwind.config={theme:{extend:{colors:{ocean:'#006994',eco:'#22963E',ecoLight:'#E8F5E9',warning:'#F59E0B',bg:'#F5F7F5'},fontFamily:{sans:['Poppins','sans-serif']}}}}</script>
+    <style>body{font-family:'Poppins',sans-serif;background:#F5F7F5}::-webkit-scrollbar{display:none}.nav-item{position:relative}.nav-item.active{color:#22963E}.nav-item.active::before{content:'';position:absolute;top:0;left:50%;transform:translateX(-50%);width:36px;height:3px;background:#22963E;border-radius:0 0 4px 4px}</style>
 </head>
 <body class="antialiased text-gray-800 min-h-screen flex flex-col max-w-md mx-auto relative pb-24 bg-bg">
-
-    <!-- Header -->
     <header class="px-5 pt-6 pb-3 flex items-center justify-between">
-        <div class="flex items-center gap-3">
-            <div class="w-10 h-10 bg-ecoLight rounded-2xl flex items-center justify-center flex-shrink-0">
-                <i class="fa-solid fa-recycle text-lg text-eco"></i>
-            </div>
-            <div>
-                <h1 class="text-base font-bold text-gray-900 leading-tight">DIGITRACE</h1>
-                <p class="text-[9px] text-gray-400 font-medium tracking-wide">LAPORAN & EDUKASI</p>
-            </div>
-        </div>
-        <div class="w-10 h-10 rounded-2xl bg-white overflow-hidden border-2 border-eco/30 shadow-sm">
-            <img src="https://ui-avatars.com/api/?name=K&background=E8F5E9&color=22963E&bold=true&size=80" alt="K" class="w-full h-full object-cover">
-        </div>
+        <div class="flex items-center gap-3"><div class="w-10 h-10 bg-ecoLight rounded-2xl flex items-center justify-center"><i class="fa-solid fa-recycle text-lg text-eco"></i></div><div><h1 class="text-base font-bold text-gray-900 leading-tight">DIGITRACE</h1><p class="text-[9px] text-gray-400 font-medium tracking-wide">LAPORAN & EDUKASI</p></div></div>
+        <button data-logout type="button" class="w-10 h-10 rounded-2xl bg-white border border-gray-100 shadow-sm text-gray-400" aria-label="Keluar"><i class="fa-solid fa-right-from-bracket"></i></button>
     </header>
 
-    <!-- Greeting -->
-    <div class="px-5 mt-2 mb-1">
-        <p class="text-xs text-gray-400 font-medium">Selamat datang 👋</p>
-        <h2 class="text-xl font-bold text-gray-900 leading-tight">Kenzie</h2>
-    </div>
+    <div class="px-5 mt-2 mb-1"><p class="text-xs text-gray-400 font-medium">Selamat datang 👋</p><h2 id="profileName" class="text-xl font-bold text-gray-900 leading-tight">Memuat...</h2></div>
 
-    <!-- Main Content -->
     <main class="flex-1 px-5 flex flex-col gap-5 mt-3">
+        <p id="dashboardFeedback" class="hidden rounded-2xl border px-4 py-3 text-xs font-medium" role="alert"></p>
+        <section class="bg-eco rounded-[1.75rem] p-5 text-white shadow-lg shadow-eco/20 relative overflow-hidden"><div class="absolute -right-6 -top-6 w-28 h-28 rounded-full bg-white/10"></div><div class="absolute -right-2 top-10 w-16 h-16 rounded-full bg-white/5"></div><div class="relative z-10 flex items-center justify-between"><div><p class="text-[11px] text-white/80 font-medium mb-1">Total Poin</p><h2 id="pointsDisplay" class="text-4xl font-extrabold tracking-tight leading-none">0</h2></div><div class="flex flex-col items-center gap-1.5"><div class="w-12 h-12 bg-white/20 rounded-2xl flex items-center justify-center"><i class="fa-solid fa-medal text-warning text-2xl"></i></div><span id="contributorTier" class="text-[9px] font-semibold text-white/90">Kontributor Pemula</span></div></div></section>
 
-        <!-- Poin Card — GREEN -->
-        <div class="bg-eco rounded-[1.75rem] p-5 text-white shadow-lg shadow-eco/20 relative overflow-hidden">
-            <div class="absolute -right-6 -top-6 w-28 h-28 rounded-full bg-white/10"></div>
-            <div class="absolute -right-2 top-10 w-16 h-16 rounded-full bg-white/5"></div>
+        <section class="grid grid-cols-2 gap-3"><div class="bg-white rounded-2xl p-4 border border-gray-100 shadow-sm"><div class="flex items-center gap-2 mb-2"><div class="w-8 h-8 rounded-xl bg-ecoLight flex items-center justify-center"><i class="fa-solid fa-camera text-eco text-sm"></i></div><span class="text-[10px] text-gray-400 font-medium">Total Scan</span></div><div class="flex items-end gap-1"><span id="scanCount" class="text-2xl font-bold text-gray-900">0</span><span class="text-xs text-gray-400 mb-1 font-medium">kali</span></div></div><div class="bg-white rounded-2xl p-4 border border-gray-100 shadow-sm"><div class="flex items-center gap-2 mb-2"><div class="w-8 h-8 rounded-xl bg-blue-50 flex items-center justify-center"><i class="fa-solid fa-recycle text-ocean text-sm"></i></div><span class="text-[10px] text-gray-400 font-medium">Jenis Plastik</span></div><div class="flex items-end gap-1"><span id="typeCount" class="text-2xl font-bold text-gray-900">0</span><span class="text-xs text-gray-400 mb-1 font-medium">jenis</span></div></div></section>
 
-            <div class="relative z-10 flex items-center justify-between">
-                <div>
-                    <p class="text-[11px] text-white/80 font-medium mb-1">Total Poin</p>
-                    <h2 class="text-4xl font-extrabold tracking-tight leading-none" id="pointsDisplay">2,500</h2>
-                </div>
-                <div class="flex flex-col items-center gap-1.5">
-                    <div class="w-12 h-12 bg-white/20 backdrop-blur-sm rounded-2xl flex items-center justify-center">
-                        <i class="fa-solid fa-medal text-warning text-2xl drop-shadow"></i>
-                    </div>
-                    <span class="text-[9px] font-semibold text-white/90">Kontributor Ahli</span>
-                </div>
-            </div>
-        </div>
+        <section class="bg-white rounded-3xl border border-gray-100 p-5 shadow-sm"><div class="flex items-center justify-between"><div><h3 class="text-sm font-bold text-gray-900">Komposisi Sampahmu</h3><p class="mt-0.5 text-[10px] text-gray-400">Berdasarkan riwayat yang disimpan</p></div><i class="fa-solid fa-chart-pie text-xl text-eco"></i></div><div id="chartEmpty" class="hidden py-7 text-center text-xs text-gray-400">Belum ada data untuk divisualkan.</div><div id="chartContent" class="mt-4 flex items-center gap-4"><svg id="pieChart" viewBox="0 0 100 100" class="h-32 w-32 shrink-0" role="img" aria-label="Pie chart jenis plastik"></svg><div id="chartLegend" class="min-w-0 flex-1 space-y-2"></div></div></section>
 
-        <!-- Two Mini Stats -->
-        <div class="grid grid-cols-2 gap-3">
-            <div class="bg-white rounded-2xl p-4 border border-gray-100 shadow-sm">
-                <div class="flex items-center gap-2 mb-2">
-                    <div class="w-8 h-8 rounded-xl bg-blue-50 flex items-center justify-center">
-                        <i class="fa-solid fa-scale-balanced text-ocean text-sm"></i>
-                    </div>
-                    <span class="text-[10px] text-gray-400 font-medium">Dilaporkan</span>
-                </div>
-                <div class="flex items-end gap-1">
-                    <span class="text-2xl font-bold text-gray-900">12</span>
-                    <span class="text-xs text-gray-400 mb-1 font-medium">kg</span>
-                </div>
-                <div class="w-full bg-gray-100 rounded-full h-1.5 mt-2">
-                    <div class="bg-ocean h-1.5 rounded-full" style="width: 60%;"></div>
-                </div>
-            </div>
-            <div class="bg-white rounded-2xl p-4 border border-gray-100 shadow-sm">
-                <div class="flex items-center gap-2 mb-2">
-                    <div class="w-8 h-8 rounded-xl bg-ecoLight flex items-center justify-center">
-                        <i class="fa-solid fa-leaf text-eco text-sm"></i>
-                    </div>
-                    <span class="text-[10px] text-gray-400 font-medium">Total Scan</span>
-                </div>
-                <div class="flex items-end gap-1">
-                    <span class="text-2xl font-bold text-gray-900" id="scanCount">5</span>
-                    <span class="text-xs text-gray-400 mb-1 font-medium">kali</span>
-                </div>
-                <div class="w-full bg-gray-100 rounded-full h-1.5 mt-2">
-                    <div class="bg-eco h-1.5 rounded-full" style="width: 50%;"></div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Rank Banner -->
-        <a href="leaderboard.html" class="block">
-            <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-4 flex items-center gap-4 hover:shadow-md transition-shadow active:scale-[0.98] transition-transform">
-                <!-- Rank badge -->
-                <div class="flex-shrink-0 w-14 h-14 rounded-2xl bg-ecoLight flex flex-col items-center justify-center gap-0.5">
-                    <i class="fa-solid fa-ranking-star text-eco text-xl"></i>
-                </div>
-                <!-- Info -->
-                <div class="flex-1 min-w-0">
-                    <p class="text-[10px] text-gray-400 font-medium">Posisimu di Denpasar</p>
-                    <div class="flex items-center gap-2 mt-0.5 flex-wrap">
-                        <span class="text-xl font-extrabold text-gray-900 leading-tight" id="myRankDisplay">#2</span>
-                        <span class="text-[10px] text-eco font-semibold bg-ecoLight px-2 py-0.5 rounded-full" id="myRankLabel">dari 5 pengguna</span>
-                    </div>
-                    <p class="text-[10px] text-gray-400 mt-1">Kamu <span class="text-eco font-semibold" id="rankGapText">1.350 poin</span> di bawah #1</p>
-                </div>
-                <!-- Arrow -->
-                <div class="flex-shrink-0 flex flex-col items-end gap-1">
-                    <span class="text-[9px] font-bold text-white bg-eco px-2.5 py-1 rounded-full" id="rankTierBadge">Kontributor Ahli</span>
-                    <i class="fa-solid fa-chevron-right text-gray-300 text-xs mt-1"></i>
-                </div>
-            </div>
-        </a>
-
-        <!-- Riwayat Laporan -->
-        <div>
-            <div class="flex justify-between items-center mb-3 px-1">
-                <h3 class="font-semibold text-sm text-gray-900">Riwayat Laporan</h3>
-                <a href="#" class="text-[11px] text-eco font-semibold">Lihat Semua</a>
-            </div>
-            <div class="space-y-3" id="historyList"></div>
-        </div>
-
+        <section><div class="flex justify-between items-center mb-3 px-1"><h3 class="font-semibold text-sm text-gray-900">Riwayat Terbaru</h3><a href="history.html" class="text-[11px] text-eco font-semibold">Lihat Semua</a></div><div id="historyList" class="space-y-3"></div></section>
     </main>
 
-    <!-- Bottom Nav -->
-    <nav class="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-100 max-w-md mx-auto z-50">
-        <div class="flex items-center justify-around px-3 pt-1.5 pb-4">
-            <a href="index.html" class="nav-item flex flex-col items-center gap-0.5 flex-1 py-1.5 rounded-2xl transition-all text-gray-400 hover:text-gray-600">
-                <i class="fa-solid fa-house text-[18px]"></i>
-                <span class="text-[9px] font-medium">Beranda</span>
-            </a>
-            <a href="scan.html" class="nav-item flex flex-col items-center gap-0.5 flex-1 py-1.5 rounded-2xl transition-all text-gray-400 hover:text-gray-600">
-                <i class="fa-solid fa-qrcode text-[18px]"></i>
-                <span class="text-[9px] font-medium">Scan</span>
-            </a>
-            <a href="dashboard.html" class="nav-item active flex flex-col items-center gap-0.5 flex-1 py-1.5 rounded-2xl transition-all">
-                <i class="fa-solid fa-clipboard-list text-[18px]"></i>
-                <span class="text-[9px] font-semibold">Laporan</span>
-            </a>
-            <a href="leaderboard.html" class="nav-item flex flex-col items-center gap-0.5 flex-1 py-1.5 rounded-2xl transition-all text-gray-400 hover:text-gray-600">
-                <i class="fa-solid fa-trophy text-[18px]"></i>
-                <span class="text-[9px] font-medium">Ranking</span>
-            </a>
-        </div>
-    </nav>
-    <style>
-        .nav-item { position: relative; }
-        .nav-item.active { color: #22963E; }
-        .nav-item.active::before {
-            content: '';
-            position: absolute;
-            top: 0; left: 50%;
-            transform: translateX(-50%);
-            width: 36px; height: 3px;
-            background: #22963E;
-            border-radius: 0 0 4px 4px;
-        }
-    </style>
-
-    <script>
-        // Mirror data from leaderboard so rank is always consistent
-        const ALL_USERS = [
-            { name: 'Raka Wijaya',   points: 3850, area: 'Denpasar', isYou: false },
-            { name: 'Kenzie',        points: 2500, area: 'Denpasar', isYou: true  },
-            { name: 'Ayu Lestari',   points: 2200, area: 'Badung',   isYou: false },
-            { name: 'Made Surya',    points: 1980, area: 'Gianyar',  isYou: false },
-            { name: 'Ni Putu Sari',  points: 1740, area: 'Denpasar', isYou: false },
-            { name: 'Gede Artha',    points: 1580, area: 'Buleleng', isYou: false },
-            { name: 'Wayan Adi',     points: 1420, area: 'Tabanan',  isYou: false },
-            { name: 'Komang Putri',  points: 1210, area: 'Badung',   isYou: false },
-            { name: 'Ida Bagus Oka', points: 1050, area: 'Gianyar',  isYou: false },
-            { name: 'Nyoman Dewi',   points:  890, area: 'Buleleng', isYou: false },
-            { name: 'Ketut Bayu',    points:  730, area: 'Denpasar', isYou: false },
-            { name: 'Sri Wahyuni',   points:  610, area: 'Tabanan',  isYou: false },
-        ];
-
-        const TIERS = [
-            { min: 3000, label: 'Kontributor Elite',   bg: 'bg-warning',  text: 'text-white' },
-            { min: 2000, label: 'Kontributor Ahli',    bg: 'bg-eco',      text: 'text-white' },
-            { min: 1000, label: 'Kontributor Aktif',   bg: 'bg-ocean',    text: 'text-white' },
-            { min: 0,    label: 'Kontributor Pemula',  bg: 'bg-gray-400', text: 'text-white' },
-        ];
-
-        function getTier(pts) {
-            return TIERS.find(t => pts >= t.min) || TIERS[TIERS.length - 1];
-        }
-
-        document.addEventListener('DOMContentLoaded', () => {
-            let myPoints = parseInt(localStorage.getItem('sidasi_points')) || 2500;
-            document.getElementById('pointsDisplay').innerText = myPoints.toLocaleString('en-US');
-
-            // Update "Kenzie" points with live value
-            const meIdx = ALL_USERS.findIndex(u => u.isYou);
-            if (meIdx !== -1) ALL_USERS[meIdx].points = myPoints;
-
-            // Compute rank within same area
-            const myUser = ALL_USERS[meIdx];
-            const sameArea = ALL_USERS.filter(u => u.area === myUser.area)
-                .sort((a, b) => b.points - a.points);
-            const myRank = sameArea.findIndex(u => u.isYou) + 1;
-            const leader = sameArea[0];
-            const gap = leader && !myUser.isYou ? leader.points - myPoints
-                      : sameArea[1] ? myPoints - sameArea[1].points : 0;
-
-            document.getElementById('myRankDisplay').innerText = `#${myRank}`;
-            document.getElementById('myRankLabel').innerText = `dari ${sameArea.length} pengguna`;
-            if (myRank === 1) {
-                document.getElementById('rankGapText').closest('p').innerHTML =
-                    `<span class="text-[10px] text-gray-400">Kamu </span><span class="text-eco font-semibold text-[10px]">memimpin di daerahmu 🏆</span>`;
-            } else {
-                document.getElementById('rankGapText').innerText =
-                    `${(leader.points - myPoints).toLocaleString('id-ID')} poin`;
-            }
-
-            // Tier badge
-            const tier = getTier(myPoints);
-            const badge = document.getElementById('rankTierBadge');
-            badge.textContent = tier.label;
-            badge.className = `text-[9px] font-bold px-2.5 py-1 rounded-full ${tier.bg} ${tier.text}`;
-
-            const historyList = document.getElementById('historyList');
-            let history = JSON.parse(localStorage.getItem('sidasi_history')) || [];
-
-            if (history.length === 0) {
-                history = [{ type: "Sampah Plastik (PET)", date: "01 January 2026", location: "Denpasar Timur" }];
-            }
-
-            document.getElementById('scanCount').innerText = history.length;
-
-            historyList.innerHTML = '';
-            history.forEach(item => {
-                const div = document.createElement('div');
-                div.className = 'bg-white p-4 rounded-2xl border border-gray-100 shadow-sm flex items-center gap-4 hover:shadow-md transition-shadow';
-                div.innerHTML = `
-                    <div class="w-11 h-11 rounded-2xl bg-ecoLight flex items-center justify-center shrink-0">
-                        <i class="fa-solid fa-bottle-water text-eco text-lg"></i>
-                    </div>
-                    <div class="flex-1 min-w-0">
-                        <h4 class="text-sm font-semibold text-gray-900 truncate">${item.type}</h4>
-                        <p class="text-[10px] text-gray-400 mt-0.5 flex items-center gap-2 flex-wrap">
-                            <span><i class="fa-regular fa-calendar mr-0.5"></i>${item.date}</span>
-                            <span><i class="fa-solid fa-location-dot text-eco mr-0.5"></i>${item.location}</span>
-                        </p>
-                    </div>
-                    <i class="fa-solid fa-chevron-right text-gray-300 text-xs shrink-0"></i>
-                `;
-                historyList.appendChild(div);
-            });
-        });
-    </script>
+    <nav class="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-100 max-w-md mx-auto z-50"><div class="flex items-center justify-around px-3 pt-1.5 pb-4"><a href="index.html" class="nav-item flex flex-col items-center gap-0.5 flex-1 py-1.5 rounded-2xl transition-all text-gray-400"><i class="fa-solid fa-house text-[18px]"></i><span class="text-[9px] font-medium">Beranda</span></a><a href="scan.html" class="nav-item flex flex-col items-center gap-0.5 flex-1 py-1.5 rounded-2xl transition-all text-gray-400"><i class="fa-solid fa-camera text-[18px]"></i><span class="text-[9px] font-medium">Scan</span></a><a href="dashboard.html" class="nav-item active flex flex-col items-center gap-0.5 flex-1 py-1.5 rounded-2xl transition-all"><i class="fa-solid fa-clipboard-list text-[18px]"></i><span class="text-[9px] font-semibold">Laporan</span></a><a href="leaderboard.html" class="nav-item flex flex-col items-center gap-0.5 flex-1 py-1.5 rounded-2xl transition-all text-gray-400"><i class="fa-solid fa-trophy text-[18px]"></i><span class="text-[9px] font-medium">Ranking</span></a></div></nav>
+    <script type="module" src="js/dashboard-page.js"></script>
 </body>
 </html>
